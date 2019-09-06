@@ -10,6 +10,22 @@ class PriceScreen extends StatefulWidget {
 
 class _PriceScreenState extends State<PriceScreen> {
   String selectedCurrency = 'INR';
+  var getCurrencyName = 'INR';
+  String bitcoinValue;
+  CoinData coinData = CoinData();
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    var data = await coinData.getCoinData(selectedCurrency);
+    setState(() {
+      bitcoinValue = data.toStringAsFixed(2);
+    });
+  }
 
   DropdownButton<String> androidDropDown() {
     List<DropdownMenuItem<String>> dropDownItems = [];
@@ -27,6 +43,7 @@ class _PriceScreenState extends State<PriceScreen> {
       onChanged: (newValue) {
         setState(() {
           selectedCurrency = newValue;
+          print(selectedCurrency);
         });
       },
     );
@@ -42,9 +59,13 @@ class _PriceScreenState extends State<PriceScreen> {
     return CupertinoPicker(
       backgroundColor: Colors.lightBlue,
       onSelectedItemChanged: (indexValue) {
+        indexValue.toInt();
+
         setState(() {
-          selectedCurrency = indexValue.toString();
-          print(selectedCurrency);
+          print(currenciesList[indexValue]);
+          getCurrencyName = currenciesList[indexValue];
+          selectedCurrency = currenciesList[indexValue].toString();
+          getData();
         });
       },
       itemExtent: 32.0,
@@ -73,7 +94,7 @@ class _PriceScreenState extends State<PriceScreen> {
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
                 child: Text(
-                  '1 BTC = ? USD',
+                  '1 BTC = $bitcoinValue $getCurrencyName',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 20.0,
