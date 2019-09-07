@@ -11,7 +11,12 @@ class PriceScreen extends StatefulWidget {
 class _PriceScreenState extends State<PriceScreen> {
   String selectedCurrency = 'INR';
   var getCurrencyName = 'INR';
+  String cryptoBTC = 'BTC';
+  String cryptoETH = 'ETH';
+  String cryptoLTC = 'LTC';
   String bitcoinValue;
+  String ethereumValue;
+  String litecoinValue;
   CoinData coinData = CoinData();
 
   @override
@@ -21,9 +26,13 @@ class _PriceScreenState extends State<PriceScreen> {
   }
 
   getData() async {
-    var data = await coinData.getCoinData(selectedCurrency);
+    var dataBTC = await coinData.getCoinData(selectedCurrency, cryptoBTC);
+    var dataETH = await coinData.getCoinData(selectedCurrency, cryptoETH);
+    var dataLTC = await coinData.getCoinData(selectedCurrency, cryptoLTC);
     setState(() {
-      bitcoinValue = data.toStringAsFixed(2);
+      bitcoinValue = dataBTC.toStringAsFixed(2);
+      ethereumValue = dataETH.toStringAsFixed(2);
+      litecoinValue = dataLTC.toStringAsFixed(2);
     });
   }
 
@@ -83,26 +92,19 @@ class _PriceScreenState extends State<PriceScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
-            child: Card(
-              color: Colors.lightBlueAccent,
-              elevation: 5.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
-                child: Text(
-                  '1 BTC = $bitcoinValue $getCurrencyName',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
+          CoinCard(
+              crypto: cryptoList.elementAt(0),
+              bitcoinValue: bitcoinValue,
+              getCurrencyName: getCurrencyName),
+          CoinCard(
+            crypto: cryptoList.elementAt(1),
+            bitcoinValue: ethereumValue,
+            getCurrencyName: getCurrencyName,
+          ),
+          CoinCard(
+            crypto: cryptoList.elementAt(2),
+            bitcoinValue: litecoinValue,
+            getCurrencyName: getCurrencyName,
           ),
           Container(
             height: 150.0,
@@ -112,6 +114,43 @@ class _PriceScreenState extends State<PriceScreen> {
             child: Platform.isIOS ? iOSPicker() : androidDropDown(),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class CoinCard extends StatelessWidget {
+  CoinCard({
+    @required this.crypto,
+    @required this.bitcoinValue,
+    @required this.getCurrencyName,
+  });
+
+  final String crypto;
+  final String bitcoinValue;
+  final String getCurrencyName;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(18.0, 76.0, 18.0, 18.0),
+      child: Card(
+        color: Colors.lightBlueAccent,
+        elevation: 5.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
+          child: Text(
+            '1 $crypto = $bitcoinValue $getCurrencyName',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20.0,
+              color: Colors.white,
+            ),
+          ),
+        ),
       ),
     );
   }

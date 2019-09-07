@@ -32,12 +32,13 @@ const List<String> cryptoList = [
 ];
 
 const bitcoinAverageURL =
-    'https://apiv2.bitcoinaverage.com/indices/global/ticker/BTC';
+    'https://apiv2.bitcoinaverage.com/indices/global/ticker/';
 
 class CoinData {
   static double lastPrice = 0;
-  Future getCoinData(String currency) async {
-    var url = '$bitcoinAverageURL$currency';
+  Future getCoinData(String currency, String cryptoType) async {
+    var url = '$bitcoinAverageURL$cryptoType$currency';
+    print(url);
     http.Response response = await http.get(url);
 
     if (response.statusCode == 200) {
