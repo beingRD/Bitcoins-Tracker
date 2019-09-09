@@ -1,6 +1,10 @@
-# bitcoins
+# Live Crypto Ticker
 
 A new Flutter project.
+
+## Snapshot
+
+![](crypto.gif)
 
 ## Getting Started
 
