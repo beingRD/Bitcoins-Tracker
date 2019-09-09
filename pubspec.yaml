@@ -1,4 +1,4 @@
-name: bitcoins
+name: cryptocoins
 description: A new Flutter project.
 version: 1.0.0+1
 
@@ -17,5 +17,11 @@ dev_dependencies:
     sdk: flutter
 
 flutter:
-
   uses-material-design: true
+  fonts:
+    - family: Pacifico
+      fonts:
+        - asset: fonts/Pacifico.ttf
+    - family: Muli
+      fonts:
+        - asset: fonts/Muli-Regular.ttf      
